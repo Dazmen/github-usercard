@@ -12,6 +12,27 @@ axios
   .catch(error => {
     console.log('The data was not returned', error);
   })
+axios
+  .get('https://api.github.com/users/Dazmen/followers')
+  .then(response => {
+    console.log(response);
+    const followerArray = response.data;
+    
+    for(i = 0; i < followerArray.length; i++){
+      let followerURL = followerArray[i].url
+      axios
+        .get(followerURL)
+        .then(response => {
+          console.log(response);
+          const cards = document.querySelector('.cards');
+          cards.append(cardCreator(response.data));
+        })
+      // cards.append(cardCreator(followerArray[i]));
+    }
+  })
+  .catch(error => {
+    console.log('Follower data was not returned', error);
+  })
 //
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
@@ -20,7 +41,7 @@ axios
 
    Skip to Step 3.
 */
-// const cards = document.querySelector('.cards');
+
 
 /* Step 4: Pass the data received from Github into your function, 
            create a new component and add it to the DOM as a child of .cards
